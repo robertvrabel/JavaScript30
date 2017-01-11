@@ -57,9 +57,40 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
+  <script>
+      function playSound(e) {
+          const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+          const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
 
-</script>
+          // If the key pressed does exist as playable audio
+          if(!audio) {
+              return;
+          }
+
+          // Reset the audio to the start so it can be pressed multiple times
+          audio.currentTime = 0;
+
+          // Play the audio
+          audio.play();
+
+          key.classList.add('playing');
+      }
+
+      function removeTransition(e) {
+          // Check for the transform property to finish
+          if(e.propertyName !== 'transform') {
+              return;
+          }
+
+          this.classList.remove('playing');
+      }
+
+      window.addEventListener('keydown', playSound);
+
+      const keys = document.querySelectorAll('.key');
+
+      keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  </script>
 
 
 </body>
